@@ -3,10 +3,13 @@
 # This script is used to update the CRC version by extracting the `crc` binary
 # from the TAR archive then place it under `~/bin` directory.
 
-BIN_DIR="$HOME/bin"
+# If bin-dir is not set, use ~/bin as the default bin-dir
+if [ -z "$BIN_DIR" ]; then
+  BIN_DIR=~/bin
+fi
 # If not enough arguments are provided, print the usage and exit
 if [ $# -ne 2 ]; then
-  echo "Usage: update-crc.sh <archive_path> <target_version>"
+	echo "Usage: update-crc.sh <archive_path> <target_version> [bin-path]"
   exit 1
 fi
 ARCHIVE_PATH=$1
