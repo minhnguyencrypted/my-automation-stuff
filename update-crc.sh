@@ -3,10 +3,13 @@
 # This script is used to update the CRC version by extracting the `crc` binary
 # from the TAR archive then place it under `~/bin` directory.
 
-# If bin-dir is not set, use ~/bin as the default bin-dir
-if [ -z "$BIN_DIR" ]; then
-  BIN_DIR=~/bin
+# If bin-path argument is not set, use ~/bin as the default BIN_PATH
+if [ -z "$3" ]; then
+  BIN_PATH=$HOME/bin
+else
+  BIN_PATH=$3
 fi
+
 # If not enough arguments are provided, print the usage and exit
 if [ $# -ne 2 ]; then
 	echo "Usage: update-crc.sh <archive_path> <target_version> [bin-path]"
@@ -21,7 +24,7 @@ if ! [[ $TARGET_VERSION =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 fi
 # Extract the `crc` binary from the tar.xz archive
 # Catch the error if extracting the `crc` binary failed
-if ! tar -xvf $ARCHIVE_PATH -C $BIN_DIR --strip-components=1 crc-linux-$TARGET_VERSION-amd64/crc; then
+if ! tar -xvf $ARCHIVE_PATH -C $BIN_PATH --strip-components=1 crc-linux-$TARGET_VERSION-amd64/crc; then
   echo "Failed to extract the crc binary from the archive"
   exit 1
 fi
