@@ -54,5 +54,15 @@ done
 # Convert the fan speed values to hex with HH format, store them in an array
 # The fan speed values are 0-100 as a percentage of maximum fan speed
 for i in {2..7}; do
-	FAN[$i]=$(printf "%02x" ${!i})
+	FAN[$i-2]=$(printf "%02x" ${!i})
 done
+
+# Enable manual fan control
+echo "Enabling manual fan control"
+ipmitool -I lanplus -H $IP -U $USER -P $PASS raw 0x30 0x30 0x01 0x00
+# Set fan speed for each fan
+for i in {0..5}; do
+	echo "Setting fan $((i+1)) speed to ${!i}%"
+	ipmitool -I lanplus -H $IP -U $USER -P $PASS raw 0x30 0x30 0x02 0xff 0x${FAN[$i]}
+done
+
