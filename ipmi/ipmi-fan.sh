@@ -62,7 +62,8 @@ echo "Enabling manual fan control"
 ipmitool -I lanplus -H $IP -U $USER -P $PASS raw 0x30 0x30 0x01 0x00
 # Set fan speed for each fan
 for i in {0..5}; do
-	echo "Setting fan $((i+1)) speed to ${!i}%"
+	idx=$((i+2))
+	echo "Setting fan $((i+1)) speed to ${!idx}%"
 	ipmitool -I lanplus -H $IP -U $USER -P $PASS raw 0x30 0x30 0x02 0xff 0x${FAN[$i]}
 done
 
